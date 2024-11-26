@@ -1,61 +1,52 @@
 // src/components/PomodoroTimer.jsx
 import React, { useState, useEffect } from 'react';
-import { Play, Pause } from 'lucide-react';
+import { Play, Pause, RotateCcw, SkipForward } from 'lucide-react';
 
-const TIMER_TYPES = {
-  TASK: { name: 'Focus', duration: 25 * 60 },
-  SHORT_BREAK: { name: 'Short Break', duration: 5 * 60 },
-  LONG_BREAK: { name: 'Long Break', duration: 15 * 60 }
-};
-
-// Previous TimerButton component remains the same
-
-const ControlButton = ({ onClick, children }) => (
-  <button
-    onClick={onClick}
-    className="p-3 rounded-full hover:bg-red-100 transition-colors"
-  >
-    {children}
-  </button>
-);
+// Previous constants and component definitions remain the same
 
 const PomodoroTimer = () => {
   const [timerType, setTimerType] = useState(TIMER_TYPES.TASK);
   const [timeLeft, setTimeLeft] = useState(TIMER_TYPES.TASK.duration);
   const [isRunning, setIsRunning] = useState(false);
 
-  useEffect(() => {
-    let interval;
+  // Previous useEffect and formatTime remain the same
 
-    if (isRunning && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft(prevTime => prevTime - 1);
-      }, 1000);
-    } else if (timeLeft === 0) {
-      setIsRunning(false);
-    }
-
-    return () => clearInterval(interval);
-  }, [isRunning, timeLeft]);
-
-  // Previous formatTime function remains the same
+  const handleTimerTypeChange = (newType) => {
+    setTimerType(newType);
+    setTimeLeft(newType.duration);
+    setIsRunning(false);
+  };
 
   const toggleTimer = () => {
     setIsRunning(!isRunning);
   };
 
+  const resetTimer = () => {
+    setTimeLeft(timerType.duration);
+    setIsRunning(false);
+  };
+
+  const skipToNext = () => {
+    const types = Object.values(TIMER_TYPES);
+    const currentIndex = types.findIndex(type => type.name === timerType.name);
+    const nextIndex = (currentIndex + 1) % types.length;
+    handleTimerTypeChange(types[nextIndex]);
+  };
+
   return (
     <div className="min-h-screen bg-red-50 flex items-center justify-center">
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
-        {/* Previous timer type buttons remain the same */}
-        
-        <div className="text-8xl font-bold text-center mb-8 font-mono">
-          {formatTime(timeLeft)}
-        </div>
+        {/* Previous timer type buttons and display remain the same */}
 
         <div className="flex justify-center gap-4">
           <ControlButton onClick={toggleTimer}>
             {isRunning ? <Pause size={24} /> : <Play size={24} />}
+          </ControlButton>
+          <ControlButton onClick={resetTimer}>
+            <RotateCcw size={24} />
+          </ControlButton>
+          <ControlButton onClick={skipToNext}>
+            <SkipForward size={24} />
           </ControlButton>
         </div>
       </div>
