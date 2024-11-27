@@ -61,23 +61,7 @@ npm run dev
 npm run build
 ```
 
-## 🏗️ Project Structure
 
-```
-pomodoro-timer/
-├── src/
-│   ├── components/
-│   │   └── PomodoroTimer.jsx
-│   ├── App.jsx
-│   └── main.jsx
-├── public/
-│   └── notification.mp3
-├── index.html
-├── package.json
-├── tailwind.config.js
-├── vite.config.js
-└── README.md
-```
 
 ## 💻 Technical Implementation Details
 
