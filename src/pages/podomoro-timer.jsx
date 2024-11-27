@@ -1,68 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Play, Pause, RotateCcw, SkipForward } from 'lucide-react';
+import { TIMER_TYPES } from '../constants/timer';
+import ControlButton from '../components/ui/control-button';
+import TimerButton from '../components/ui/timer-button';
+import { StopwatchBackground } from '../components/ui/background';
 
-// Background SVG Component
-const StopwatchBackground = () => (
-  <div className="fixed inset-0 z-0 overflow-hidden opacity-5">
-    <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
-      <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="2" />
-      {/* Clock markers */}
-      {[...Array(12)].map((_, i) => {
-        const angle = (i * 30 - 90) * (Math.PI / 180);
-        const x1 = 50 + 38 * Math.cos(angle);
-        const y1 = 50 + 38 * Math.sin(angle);
-        const x2 = 50 + 45 * Math.cos(angle);
-        const y2 = 50 + 45 * Math.sin(angle);
-        return (
-          <line
-            key={i}
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            stroke="currentColor"
-            strokeWidth={i % 3 === 0 ? "3" : "1"}
-          />
-        );
-      })}
-    </svg>
-  </div>
-);
-
-// Timer Types Constants
-const TIMER_TYPES = {
-  TASK: { name: 'Focus', duration: 25 * 60 },
-  SHORT_BREAK: { name: 'Short Break', duration: 5 * 60 },
-  LONG_BREAK: { name: 'Long Break', duration: 15 * 60 }
-};
-
-const TimerButton = ({ active, onClick, children }) => (
-  <button
-    onClick={onClick}
-    className={`px-6 py-2 rounded-lg font-medium transition-colors relative
-      ${active 
-        ? 'bg-red-500 text-white shadow-lg' 
-        : 'bg-red-100 text-red-600 hover:bg-red-200'}`
-    }
-  >
-    {children}
-  </button>
-);
-
-const ControlButton = ({ onClick, children, disabled }) => (
-  <button
-    onClick={onClick}
-    disabled={disabled}
-    className={`p-3 rounded-full transition-all transform
-      ${disabled 
-        ? 'opacity-50 cursor-not-allowed' 
-        : 'hover:bg-red-100 active:bg-red-200 hover:scale-110'}
-      focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50`
-    }
-  >
-    {children}
-  </button>
-);
 
 const PomodoroTimer = () => {
   const [timerType, setTimerType] = useState(TIMER_TYPES.TASK);
@@ -156,9 +98,7 @@ const PomodoroTimer = () => {
 
         <div className="text-7xl md:text-8xl font-bold text-center mb-8 font-mono relative">
           {formatTime(timeLeft)}
-          {isRunning && (
-            <div className="absolute -right-4 top-0 text-red-500 animate-pulse">●</div>
-          )}
+          {isRunning}
         </div>
 
         <div className="flex justify-center gap-4">
